@@ -43,7 +43,7 @@ export function Navbar() {
           }`}
         >
           <Link href="/" onClick={() => setOpen(false)} aria-label="HireASub home">
-            <Logo className={pill ? "text-xl" : "text-2xl"} />
+            <Logo className={pill ? "h-7" : "h-8 sm:h-9"} />
           </Link>
 
           <ul className="hidden items-center gap-6 md:flex lg:gap-8">

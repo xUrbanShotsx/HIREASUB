@@ -7,7 +7,7 @@
   --line: oklch(0.88 0.015 70);
   --ink: oklch(0.24 0.03 250);
   --ink-soft: oklch(0.44 0.025 250);
-  --accent: #d9480f;
+  --accent: #e42855;
 }
 
 @theme inline {

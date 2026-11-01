@@ -23,7 +23,7 @@ function AppWindow({
   children: ReactNode;
 }) {
   return (
-    <div className="lift relative overflow-hidden rounded-[1.75rem] bg-[linear-gradient(140deg,oklch(0.2_0.03_250),oklch(0.32_0.06_40))] pl-4 pt-5 shadow-[0_40px_90px_-40px_oklch(0.24_0.03_250/0.7)] sm:pl-8 sm:pt-8">
+    <div className="lift relative overflow-hidden rounded-[1.75rem] bg-[linear-gradient(140deg,oklch(0.2_0.03_250),oklch(0.34_0.1_10))] pl-4 pt-5 shadow-[0_40px_90px_-40px_oklch(0.24_0.03_250/0.7)] sm:pl-8 sm:pt-8">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-12 bottom-6 h-80 w-28 -rotate-12 rounded-full bg-accent/70 blur-3xl"
@@ -54,7 +54,7 @@ function AppWindow({
           </span>
         </div>
         <div className="flex items-center gap-3 border-b border-line px-4 py-2.5">
-          <Logo className="text-[13px]" />
+          <Logo className="h-3.5" />
           <span className="ml-auto hidden items-center gap-1.5 rounded-full bg-bg px-3 py-1 text-[11px] text-ink-soft sm:flex">
             <Icon name="search" className="h-3 w-3" /> Search
           </span>
