@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Manrope, IBM_Plex_Mono } from "next/font/google";
 import { Motion } from "@/components/Motion";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 const sans = Manrope({
@@ -60,9 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className="flex min-h-full flex-col">
         <Motion />
-        <Navbar />
-        <main className="flex-1 pt-20 sm:pt-24">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

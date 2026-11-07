@@ -1,251 +1,146 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Eyebrow } from "@/components/Sections";
 import { Icon } from "@/components/Icons";
-import { roleKeys, roles, type Role } from "@/lib/roles";
+import {
+  btnLight,
+  Card,
+  CardHead,
+  PageHeading,
+  Pill,
+  Stat,
+} from "@/components/app/ui";
+import { overviews } from "@/lib/dashboard";
+import type { Role } from "@/lib/roles";
 
-type Tone = "ok" | "warn" | "plain";
-
-type Data = {
-  heading: string;
-  sub: string;
-  stats: [string, string][];
-  listTitle: string;
-  list: { t: string; m: string; r: string; tag: string; tone: Tone }[];
-  sideTitle: string;
-  side: { t: string; d: string; warn?: boolean }[];
-};
-
-const data: Record<Role, Data> = {
-  subcontractor: {
-    heading: "Good morning, Hartley Electrical",
-    sub: "Crew of 4 · Licence EC-48213 · Sydney inner west",
-    stats: [
-      ["New jobs near you", "9"],
-      ["Quotes out", "5"],
-      ["Booked this month", "7"],
-      ["Awaiting payment", "$6,420"],
-    ],
-    listTitle: "Jobs near you",
-    list: [
-      {
-        t: "Switchboard upgrade, Marrickville",
-        m: "Fixed price · starts Mon 9 Nov · 6 km",
-        r: "Quote",
-        tag: "New",
-        tone: "ok",
-      },
-      {
-        t: "Rewire, 2 storey terrace, Newtown",
-        m: "Builder: Carter Homes · 4 days · 8 km",
-        r: "Quote",
-        tag: "New",
-        tone: "ok",
-      },
-      {
-        t: "Commercial fit-out lighting, Alexandria",
-        m: "Quote sent Thu · $18,900",
-        r: "View",
-        tag: "Waiting",
-        tone: "plain",
-      },
-      {
-        t: "Granny flat, Dulwich Hill",
-        m: "Final sign-off requested",
-        r: "Open",
-        tag: "Action",
-        tone: "warn",
-      },
-    ],
-    sideTitle: "Your paperwork",
-    side: [
-      { t: "Trade licence", d: "Active until 2027" },
-      { t: "Public liability", d: "$20M · expires 14 Mar 2027" },
-      { t: "Workers compensation", d: "Expires 30 Nov 2026", warn: true },
-      { t: "White cards", d: "4 of 4 verified" },
-    ],
-  },
-  "sole-trader": {
-    heading: "Good morning, Jay",
-    sub: "Sole trader · Plumber and gasfitter · Licence 214871C",
-    stats: [
-      ["Jobs near you", "6"],
-      ["Quotes out", "3"],
-      ["On the books", "2"],
-      ["Awaiting payment", "$1,980"],
-    ],
-    listTitle: "Your jobs",
-    list: [
-      {
-        t: "Replace hot water system, Newtown",
-        m: "Quote requested · within 2 weeks · $2k to $3.5k",
-        r: "Quote",
-        tag: "New",
-        tone: "ok",
-      },
-      {
-        t: "Bathroom rough-in, Petersham",
-        m: "Booked · Wed 11 Nov · deposit held",
-        r: "Open",
-        tag: "Booked",
-        tone: "plain",
-      },
-      {
-        t: "Leaking tap and valve, Stanmore",
-        m: "Completed · sign-off pending",
-        r: "Open",
-        tag: "Action",
-        tone: "warn",
-      },
-    ],
-    sideTitle: "Your paperwork",
-    side: [
-      { t: "Trade licence", d: "Active until 2028" },
-      { t: "Public liability", d: "$10M · expires 2 Feb 2027" },
-      { t: "ABN", d: "Active · GST registered" },
-      { t: "White card", d: "Verified", warn: false },
-    ],
-  },
-};
-
-export function generateStaticParams() {
-  return roleKeys.map((role) => ({ role }));
-}
-
-export async function generateMetadata({
+export default async function Overview({
   params,
 }: {
-  params: Promise<{ role: string }>;
-}): Promise<Metadata> {
-  const { role } = await params;
-  return {
-    title: role in roles ? `${roles[role as Role].label} dashboard` : "Dashboard",
-    robots: { index: false },
-  };
-}
-
-function Pill({ tone, children }: { tone: Tone; children: string }) {
-  const t = {
-    ok: "bg-[oklch(0.93_0.07_155)] text-[oklch(0.35_0.1_155)]",
-    warn: "bg-accent/15 text-accent",
-    plain: "bg-tint text-ink-soft",
-  }[tone];
-  return (
-    <span
-      className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${t}`}
-    >
-      {children}
-    </span>
-  );
-}
-
-export default async function Dashboard({
-  params,
-}: {
-  params: Promise<{ role: string }>;
+  params: Promise<{ role: Role }>;
 }) {
   const { role } = await params;
-  if (!(role in roles)) notFound();
-  const r = role as Role;
-  const d = data[r];
-  const other = roleKeys.find((k) => k !== r)!;
+  const o = overviews[role];
+  const max = Math.max(...o.earnings.map((e) => e.v));
+  const base = `/dashboard/${role}`;
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-6 pt-12 sm:px-8 sm:pt-16">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div data-load className="flex flex-wrap items-center gap-3">
-            <Eyebrow>{roles[r].label} dashboard</Eyebrow>
-            <span className="rounded-full bg-tint px-2.5 py-1 text-[10px] font-semibold text-ink-soft">
-              Sample data
-            </span>
-          </div>
-          <h1
-            data-load
-            className="mt-4 font-display text-[clamp(2rem,4.4vw,3.6rem)] font-bold leading-[1.02] tracking-tight"
-          >
-            {d.heading}
-          </h1>
-          <p data-load className="mt-3 text-ink-soft">
-            {d.sub}
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Link
-            href={`/dashboard/${other}`}
-            className="rounded-full border border-line px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-tint"
-          >
-            View as {roles[other].label.toLowerCase()}
-          </Link>
-          <Link
-            href="/"
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-bg transition-colors hover:bg-ink/85"
-          >
-            Sign out
-          </Link>
-        </div>
-      </div>
+    <>
+      <PageHeading
+        title={`Good morning, ${o.greeting}`}
+        sub={o.sub}
+        action="Quote a job"
+      />
 
-      <dl
-        data-stagger
-        className="mt-10 grid grid-cols-2 border-t border-ink lg:grid-cols-4"
-      >
-        {d.stats.map(([k, v]) => (
-          <div key={k} className="border-b border-line py-5 pr-4">
-            <dt className="font-mono text-[11px] uppercase tracking-wider text-ink-soft">
-              {k}
-            </dt>
-            <dd className="mt-1 font-display text-3xl font-bold">{v}</dd>
-          </div>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        {o.stats.map((s) => (
+          <Stat key={s.label} {...s} />
         ))}
-      </dl>
-
-      <div className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[1.5fr_1fr]">
-        <section data-reveal>
-          <h2 className="font-display text-2xl font-bold">{d.listTitle}</h2>
-          <ul className="mt-4 divide-y divide-line border-y border-line">
-            {d.list.map((j) => (
-              <li
-                key={j.t}
-                className={`row-hover flex items-center gap-3 py-4 ${j.tone === "warn" ? "bg-tint" : ""}`}
-              >
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate font-semibold">{j.t}</span>
-                  <span className="block truncate text-sm text-ink-soft">
-                    {j.m}
-                  </span>
-                </span>
-                <Pill tone={j.tone}>{j.tag}</Pill>
-                <span className="hidden w-14 text-right text-sm font-semibold sm:block">
-                  {j.r}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section data-reveal>
-          <h2 className="font-display text-2xl font-bold">{d.sideTitle}</h2>
-          <ul className="mt-4 divide-y divide-line border-y border-line">
-            {d.side.map((s) => (
-              <li
-                key={s.t}
-                className={`flex items-center gap-3 py-4 ${s.warn ? "bg-tint" : ""}`}
-              >
-                <Icon
-                  name={s.warn ? "clock" : "check"}
-                  className={`h-5 w-5 shrink-0 ${s.warn ? "text-accent" : "text-ink-soft"}`}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold">{s.t}</span>
-                  <span className="block text-sm text-ink-soft">{s.d}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
       </div>
-    </div>
+
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[1.6fr_1fr]">
+        <div className="space-y-6">
+          <Card>
+            <CardHead title="Needs you" sub="Things waiting on you today" />
+            <ul className="divide-y divide-line">
+              {o.attention.map((a) => (
+                <li
+                  key={a.t}
+                  className={`flex items-center gap-3 px-5 py-4 ${a.tone === "owed" ? "bg-tint/60" : ""}`}
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-semibold">
+                      {a.t}
+                    </span>
+                    <span className="block truncate text-xs text-ink-soft">
+                      {a.d}
+                    </span>
+                  </span>
+                  <Pill tone={a.tone}>{a.tag}</Pill>
+                </li>
+              ))}
+            </ul>
+          </Card>
+
+          <Card>
+            <CardHead title="Earnings" sub="Paid out per month, in $1,000s" />
+            <div
+              className="flex h-44 items-end gap-3 px-5 pb-5 pt-6 sm:gap-5"
+              role="img"
+              aria-label={`Monthly earnings: ${o.earnings.map((e) => `${e.m} ${e.v}k`).join(", ")}`}
+            >
+              {o.earnings.map((e, i) => (
+                <div key={e.m} className="flex h-full flex-1 flex-col justify-end gap-2">
+                  <span className="text-center text-[11px] font-semibold tabular-nums text-ink-soft">
+                    {e.v}k
+                  </span>
+                  <div
+                    className={`rounded-t-md ${i === o.earnings.length - 1 ? "bg-accent" : "bg-ink"}`}
+                    style={{ height: `${(e.v / max) * 100}%` }}
+                  />
+                  <span className="text-center font-mono text-[11px] uppercase text-ink-soft">
+                    {e.m}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHead title="This week" />
+            <ul className="divide-y divide-line">
+              {o.week.map((d) => (
+                <li key={d.day} className="flex gap-4 px-5 py-3.5">
+                  <span className="w-9 font-mono text-xs uppercase text-ink-soft">
+                    {d.day}
+                  </span>
+                  <span className="min-w-0 flex-1 text-sm">
+                    {d.items.length ? (
+                      d.items.map((i) => (
+                        <span key={i} className="block truncate font-medium">
+                          {i}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-ink-soft">Free</span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="border-t border-line px-5 py-3">
+              <Link href={`${base}/schedule`} className="text-sm font-semibold underline">
+                Open schedule
+              </Link>
+            </div>
+          </Card>
+
+          <Card>
+            <CardHead title="Your paperwork" sub="Checked against public registers" />
+            <ul className="divide-y divide-line">
+              {o.docs.map((d) => (
+                <li
+                  key={d.t}
+                  className={`flex items-center gap-3 px-5 py-3.5 ${d.warn ? "bg-tint/60" : ""}`}
+                >
+                  <Icon
+                    name={d.warn ? "clock" : "check"}
+                    className={`h-5 w-5 shrink-0 ${d.warn ? "text-accent" : "text-ink-soft"}`}
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold">{d.t}</span>
+                    <span className="block text-xs text-ink-soft">{d.d}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="border-t border-line p-4">
+              <Link href={`${base}/documents`} className={btnLight}>
+                Manage documents
+              </Link>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </>
   );
 }
