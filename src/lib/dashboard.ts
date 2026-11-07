@@ -12,7 +12,7 @@ export type Section = {
   sub: string;
   action?: string;
   stats?: [string, string, string?][];
-  kind?: "table" | "schedule" | "settings";
+  kind?: "table" | "schedule" | "settings" | "verification";
   cols?: string[];
   rows?: Cell[][];
 };
@@ -126,34 +126,14 @@ const reviews: Section = {
   ],
 };
 
-const documents = (kind: "company" | "personal"): Section => ({
-  slug: "documents",
-  label: "Documents",
+const verification: Section = {
+  slug: "verification",
+  label: "Verification",
   icon: "shield",
-  title: "Documents",
-  sub: "Your licence and cover, checked against public registers.",
-  action: "Upload document",
-  stats: [
-    ["Valid", kind === "company" ? "5" : "4"],
-    ["Renew soon", "1", "within 60 days"],
-  ],
-  cols: ["Document", "Number", "Expires", "Status"],
-  rows:
-    kind === "company"
-      ? [
-          ["Trade licence", "EC-48213", "12 Aug 2027", p("Valid", "ok")],
-          ["Public liability $20M", "QBE-77120", "14 Mar 2027", p("Valid", "ok")],
-          ["Workers compensation", "icare-5521", "30 Nov 2026", p("Renew soon", "owed")],
-          ["White cards (4)", "Crew", "Verified", p("Valid", "ok")],
-          ["ABN", "51 824 753 556", "Active", p("Valid", "ok")],
-        ]
-      : [
-          ["Trade licence", "214871C", "9 Jun 2028", p("Valid", "ok")],
-          ["Public liability $10M", "NRMA-3381", "2 Feb 2027", p("Valid", "ok")],
-          ["White card", "WC-90214", "Verified", p("Valid", "ok")],
-          ["ABN", "33 109 442 871", "Active", p("Valid", "ok")],
-        ],
-});
+  title: "Verification",
+  sub: "Licence, insurance and ID checks that clients see on your profile.",
+  kind: "verification",
+};
 
 const crew: Section = {
   slug: "crew",
@@ -208,18 +188,18 @@ export const people: Record<Role, Person> = {
 };
 
 export const sections: Record<Role, Section[]> = {
-  subcontractor: [overview, findJobs, quotes, schedule, crew, payments, reviews, documents("company"), settings],
-  "sole-trader": [overview, findJobs, quotes, schedule, payments, reviews, documents("personal"), settings],
+  subcontractor: [overview, findJobs, quotes, schedule, crew, payments, reviews, verification, settings],
+  "sole-trader": [overview, findJobs, quotes, schedule, payments, reviews, verification, settings],
 };
 
 export const navGroups: Record<Role, NavGroup[]> = {
   subcontractor: [
     { slugs: ["", "jobs", "quotes", "schedule"] },
-    { label: "Business", slugs: ["crew", "payments", "reviews", "documents"] },
+    { label: "Business", slugs: ["crew", "payments", "reviews", "verification"] },
   ],
   "sole-trader": [
     { slugs: ["", "jobs", "quotes", "schedule"] },
-    { label: "Business", slugs: ["payments", "reviews", "documents"] },
+    { label: "Business", slugs: ["payments", "reviews", "verification"] },
   ],
 };
 

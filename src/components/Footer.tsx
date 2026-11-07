@@ -3,7 +3,7 @@ import Link from "next/link";
 const items = [
   ["How it works", "/#how"],
   ["Trades", "/#trades"],
-  ["Checks", "/#checks"],
+  ["Verify a trade", "/verify"],
   ["Sign in", "/signin"],
   ["Sign up", "/signup"],
 ];

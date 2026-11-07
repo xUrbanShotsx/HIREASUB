@@ -115,7 +115,7 @@ export default async function Overview({
           </Card>
 
           <Card>
-            <CardHead title="Your paperwork" sub="Checked against public registers" />
+            <CardHead title="Verification" sub="Licence and cover, re-checked weekly" />
             <ul className="divide-y divide-line">
               {o.docs.map((d) => (
                 <li
@@ -134,8 +134,8 @@ export default async function Overview({
               ))}
             </ul>
             <div className="border-t border-line p-4">
-              <Link href={`${base}/documents`} className={btnLight}>
-                Manage documents
+              <Link href={`${base}/verification`} className={btnLight}>
+                Manage verification
               </Link>
             </div>
           </Card>

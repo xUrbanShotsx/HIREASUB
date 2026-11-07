@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Card, PageHeading, Stat, Table, btnDark, btnLight } from "@/components/app/ui";
+import { VerificationPanel } from "@/components/app/VerificationPanel";
 import { people, scheduleDays, sections } from "@/lib/dashboard";
 import { roleKeys, roles, type Role } from "@/lib/roles";
 
@@ -50,6 +51,8 @@ export default async function Section({
           ))}
         </div>
       )}
+
+      {s.kind === "verification" && <VerificationPanel role={r} />}
 
       {s.kind === "schedule" && (
         <Card>
