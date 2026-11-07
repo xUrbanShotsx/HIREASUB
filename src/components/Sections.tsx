@@ -48,12 +48,12 @@ export function CtaBand() {
         </p>
         <div className="mt-9 flex flex-wrap gap-4">
           <Magnetic>
-            <ButtonLink href="#" variant="light">
+            <ButtonLink href="/signup" variant="light">
               Post a job
             </ButtonLink>
           </Magnetic>
           <Link
-            href="#trades"
+            href="/signup"
             className="inline-flex items-center rounded-full border border-bg/50 px-7 py-3.5 font-semibold transition-colors hover:bg-bg/10"
           >
             Join as a subcontractor

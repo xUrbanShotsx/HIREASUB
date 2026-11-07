@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 const items = [
-  ["How it works", "#how"],
-  ["Trades", "#trades"],
-  ["Checks", "#checks"],
-  ["Post a job", "#start"],
-  ["Join as a sub", "#trades"],
+  ["How it works", "/#how"],
+  ["Trades", "/#trades"],
+  ["Checks", "/#checks"],
+  ["Sign in", "/signin"],
+  ["Sign up", "/signup"],
 ];
 
 export function Footer() {

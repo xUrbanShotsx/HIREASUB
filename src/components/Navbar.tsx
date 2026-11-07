@@ -6,10 +6,10 @@ import { Icon } from "./Icons";
 import { Logo } from "./Logo";
 
 const links = [
-  { href: "#how", label: "How it works" },
-  { href: "#trades", label: "Trades" },
-  { href: "#checks", label: "Checks" },
-  { href: "#start", label: "Pricing" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#trades", label: "Trades" },
+  { href: "/#checks", label: "Checks" },
+  { href: "/#start", label: "Pricing" },
 ];
 
 export function Navbar() {
@@ -61,16 +61,16 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <Link
-              href="#trades"
+              href="/signin"
               className={`hidden whitespace-nowrap rounded-full border border-line font-semibold transition-all duration-500 hover:bg-tint lg:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
             >
-              Join as a sub
+              Sign in
             </Link>
             <Link
-              href="#start"
+              href="/signup"
               className={`hidden whitespace-nowrap rounded-full bg-ink font-semibold text-bg transition-all duration-500 hover:bg-ink/85 sm:inline-block ${pill ? "px-5 py-2 text-sm" : "px-6 py-2.5 text-base"}`}
             >
-              Post a job
+              Sign up
             </Link>
             <button
               type="button"
@@ -106,18 +106,18 @@ export function Navbar() {
           </ul>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <Link
-              href="#trades"
+              href="/signin"
               onClick={() => setOpen(false)}
               className="rounded-full border border-line py-3 text-center font-semibold"
             >
-              Join as a sub
+              Sign in
             </Link>
             <Link
-              href="#start"
+              href="/signup"
               onClick={() => setOpen(false)}
               className="rounded-full bg-ink py-3 text-center font-semibold text-bg"
             >
-              Post a job
+              Sign up
             </Link>
           </div>
         </div>
