@@ -191,7 +191,7 @@ function JobCard({ job }: { job: Job }) {
                       </span>
                       {o.note && <span className="mt-1 block text-xs text-ink-soft">“{o.note}”</span>}
                     </span>
-                    <span className="text-right">
+                    <span className="text-left sm:text-right">
                       <span className="block font-display text-lg font-extrabold">{rateLabel(o)}</span>
                       <span className="block text-xs text-ink-soft">
                         about {money(estTotal(o, job.days))} for {job.days} day{job.days === 1 ? "" : "s"}

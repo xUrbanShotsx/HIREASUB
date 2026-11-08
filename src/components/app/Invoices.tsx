@@ -57,7 +57,7 @@ export function Invoices({ role }: { role: Role }) {
                       {inv.qty} {inv.rateType === "day" ? "day" : "hr"} at {rateLabel(inv)} · sent {fmtDate(inv.sent)}
                     </span>
                   </span>
-                  <span className="text-right">
+                  <span className="text-left sm:text-right">
                     <span className="block font-display text-lg font-extrabold">{money(t.total)}</span>
                     <span className="block text-xs text-ink-soft">
                       {money(t.sub)} + {money(t.gst)} GST

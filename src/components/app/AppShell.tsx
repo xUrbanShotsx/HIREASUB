@@ -88,7 +88,7 @@ export function AppShell({
                     href={hrefOf(n.slug)}
                     onClick={() => setOpen(false)}
                     aria-current={active ? "page" : undefined}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition-colors ${
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors lg:py-2 ${
                       active
                         ? "bg-accent/20 text-ink"
                         : "text-ink-soft hover:bg-tint hover:text-ink"
@@ -117,6 +117,13 @@ export function AppShell({
             <p className="truncate text-xs text-ink-soft">{person.role}</p>
           </div>
         </div>
+        <Link
+          href={`/dashboard/${other}`}
+          onClick={() => setOpen(false)}
+          className="mt-3 flex items-center gap-2 text-xs font-semibold text-ink-soft hover:text-ink sm:hidden"
+        >
+          <Icon name="users" className="h-3.5 w-3.5" /> View as {roles[other].label.toLowerCase()}
+        </Link>
         <Link
           href="/"
           className="mt-3 flex items-center gap-2 text-xs font-semibold text-ink-soft hover:text-ink"
@@ -157,6 +164,9 @@ export function AppShell({
           >
             <Icon name="menu" className="h-6 w-6" />
           </button>
+          <Link href={base} aria-label="HireASub dashboard" className="lg:hidden">
+            <Logo className="h-5" />
+          </Link>
           <label className="relative hidden w-full max-w-sm sm:block">
             <span className="sr-only">Search</span>
             <Icon

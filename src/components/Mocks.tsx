@@ -87,7 +87,7 @@ function AppWindow({
 
 function PageTitle({ title, sub }: { title: string; sub?: string }) {
   return (
-    <div className="px-5 pt-5">
+    <div className="pl-5 pr-9 pt-5">
       <h3 className="font-display text-lg font-extrabold leading-tight tracking-tight">
         {title}
       </h3>
@@ -159,7 +159,7 @@ export function QuotesMock() {
         {quotes.map((q) => (
           <li
             key={q.n}
-            className={`board-row flex items-center gap-3 px-5 py-3 ${q.open ? "bg-tint" : ""}`}
+            className={`board-row flex items-center gap-3 pl-5 pr-9 py-3 ${q.open ? "bg-tint" : ""}`}
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-bold text-bg">
               {q.n[0]}
@@ -169,15 +169,20 @@ export function QuotesMock() {
               <span className="block truncate text-[11px] text-ink-soft">
                 {q.meta}
               </span>
+              <span className="mt-1 block sm:hidden">
+                <Pill tone={q.tone}>{q.tag}</Pill>
+              </span>
             </span>
-            <Pill tone={q.tone}>{q.tag}</Pill>
+            <span className="hidden sm:block">
+              <Pill tone={q.tone}>{q.tag}</Pill>
+            </span>
             <span className="w-16 text-right font-display text-base font-extrabold">
               {q.price}
             </span>
           </li>
         ))}
       </ul>
-      <div className="flex items-center justify-between border-t border-line px-5 py-3">
+      <div className="flex items-center justify-between border-t border-line pl-5 pr-9 py-3">
         <span className="text-[11px] text-ink-soft">
           Licence EC-48213 verified today
         </span>
@@ -200,7 +205,7 @@ export function JobMock() {
   return (
     <AppWindow url="hireasub.com.au/post" tab="Post a job" active="jobs">
       <PageTitle title="Replace hot water system" sub="Step 2 of 3 · Details" />
-      <div className="grid grid-cols-2 gap-3 p-5">
+      <div className="grid grid-cols-2 gap-3 py-5 pl-5 pr-9">
         {fields.map(([k, v]) => (
           <div key={k} className="rounded-lg border border-line px-3 py-2">
             <p className="font-mono text-[10px] uppercase tracking-wider text-ink-soft">
@@ -249,7 +254,7 @@ export function ChecksMock() {
         {rows.map(([t, d, tone]) => (
           <li
             key={t}
-            className={`board-row flex items-center gap-3 px-5 py-3 ${tone === "warn" ? "bg-tint" : ""}`}
+            className={`board-row flex items-center gap-3 pl-5 pr-9 py-3 ${tone === "warn" ? "bg-tint" : ""}`}
           >
             <span className="min-w-0 flex-1">
               <span className="block text-[13px] font-bold">{t}</span>
@@ -281,7 +286,7 @@ export function MilestoneMock() {
         {steps.map(([t, a, s], i) => (
           <li
             key={t}
-            className={`board-row flex items-center gap-3 px-5 py-3 ${i === 2 ? "bg-tint" : ""}`}
+            className={`board-row flex items-center gap-3 pl-5 pr-9 py-3 ${i === 2 ? "bg-tint" : ""}`}
           >
             <span className="font-mono text-xs text-ink-soft">0{i + 1}</span>
             <span className="min-w-0 flex-1">
