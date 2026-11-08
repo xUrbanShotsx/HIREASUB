@@ -128,9 +128,9 @@ export const register = [
   {
     key: "ec48213",
     match: ["ec-48213", "ec48213", "51 824 753 556", "51824753556"],
-    name: "Hartley Electrical Pty Ltd",
+    name: "Coastline Electrical Pty Ltd",
     trade: "Electrical contractor",
-    area: "Sydney inner west",
+    area: "Illawarra and South Coast",
     checks: [
       ["Trade licence", "EC-48213", "Active until 12 Aug 2027", "ok"],
       ["Public liability", "$20M · QBE", "Expires 14 Mar 2027", "ok"],

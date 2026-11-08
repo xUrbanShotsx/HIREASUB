@@ -8,6 +8,7 @@ import { Icon, type IconName } from "../Icons";
 import { Logo } from "../Logo";
 import { Avatar } from "./ui";
 import { roleKeys, roles, type Role } from "@/lib/roles";
+import { hired, matchesMe, myOffer, useDemo } from "@/lib/demo";
 
 type Item = { slug: string; label: string; icon: IconName };
 type Group = { label?: string; items: Item[] };
@@ -27,6 +28,23 @@ export function AppShell({
   const [open, setOpen] = useState(false);
   const base = `/dashboard/${role}`;
   const other = roleKeys.find((k) => k !== role)!;
+  const demo = useDemo();
+
+  const badges: Record<string, number> =
+    role === "sole-trader"
+      ? {
+          jobs: demo.jobs.reduce(
+            (n, j) => n + (j.status === "open" ? j.offers.filter((o) => o.status === "pending").length : 0),
+            0,
+          ),
+          invoices: demo.jobs.filter((j) => j.invoice && !j.invoice.paid).length,
+        }
+      : {
+          alerts: demo.jobs.filter((j) => matchesMe(demo, j) && !myOffer(j)).length,
+          work: demo.jobs.filter((j) => hired(j)?.subId === "me" && j.status === "complete").length,
+        };
+  const bellCount = Object.values(badges).reduce((a, b) => a + b, 0);
+  const bellHref = role === "sole-trader" ? `${base}/jobs` : `${base}/alerts`;
 
   const hrefOf = (slug: string) => (slug ? `${base}/${slug}` : base);
   const isActive = (slug: string) =>
@@ -78,6 +96,11 @@ export function AppShell({
                   >
                     <Icon name={n.icon} className="h-[18px] w-[18px]" />
                     {n.label}
+                    {badges[n.slug] > 0 && (
+                      <span className="ml-auto rounded-full bg-accent px-2 py-0.5 text-[11px] font-bold leading-none text-bg">
+                        {badges[n.slug]}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -156,14 +179,18 @@ export function AppShell({
             >
               View as {roles[other].label.toLowerCase()}
             </Link>
-            <button
-              type="button"
-              aria-label="Notifications"
+            <Link
+              href={bellHref}
+              aria-label={`Notifications${bellCount ? `, ${bellCount} new` : ""}`}
               className="relative flex h-10 w-10 items-center justify-center rounded-full hover:bg-tint"
             >
               <Icon name="bell" className="h-5 w-5" />
-              <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-accent" />
-            </button>
+              {bellCount > 0 && (
+                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold leading-none text-bg">
+                  {bellCount}
+                </span>
+              )}
+            </Link>
             <Link
               href={`${base}/settings`}
               aria-label="Settings"

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Icon } from "../Icons";
-import type { Cell, Tone } from "@/lib/dashboard";
+import type { Tone } from "@/lib/dashboard";
 
 export function Pill({
   tone = "neutral",
@@ -94,11 +94,9 @@ export function Stat({
 export function PageHeading({
   title,
   sub,
-  action,
 }: {
   title: string;
   sub?: string;
-  action?: string;
 }) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
@@ -108,11 +106,6 @@ export function PageHeading({
         </h1>
         {sub && <p className="mt-1 text-sm text-ink-soft">{sub}</p>}
       </div>
-      {action && (
-        <button type="button" className={btnDark}>
-          <Icon name="plus" className="h-4 w-4" /> {action}
-        </button>
-      )}
     </div>
   );
 }
@@ -121,35 +114,3 @@ export const btn =
   "inline-flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200";
 export const btnDark = `${btn} bg-ink text-bg hover:bg-ink/85`;
 export const btnLight = `${btn} border border-line bg-surface hover:bg-tint`;
-
-export function Table({ cols, rows }: { cols: string[]; rows: Cell[][] }) {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[34rem] text-left text-sm">
-        <thead>
-          <tr className="border-b border-line font-mono text-[11px] uppercase tracking-wider text-ink-soft">
-            {cols.map((c) => (
-              <th key={c} className="whitespace-nowrap px-5 py-3 font-medium">
-                {c}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-line">
-          {rows.map((r, i) => (
-            <tr key={i} className="transition-colors hover:bg-tint/60">
-              {r.map((c, j) => (
-                <td
-                  key={j}
-                  className={`px-5 py-3.5 ${j === 0 ? "font-semibold" : "text-ink-soft"}`}
-                >
-                  {typeof c === "string" ? c : <Pill tone={c.tone}>{c.pill}</Pill>}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
